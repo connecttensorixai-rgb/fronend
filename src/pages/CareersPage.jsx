@@ -36,6 +36,46 @@ const openRoles = [
       'If you are passionate about AI, Machine Learning, Deep Learning, and building next-generation AI products, we would love to hear from you.',
   },
   {
+    title: 'Full Stack Developer',
+    description: (
+      <>
+        We are looking for talented and motivated{' '}
+        <strong className="text-slate-900">Full Stack Developers</strong> to join our team and contribute to building{' '}
+        <strong className="text-slate-900">innovative technology solutions</strong>. We're particularly interested in
+        developers who enjoy designing, developing, and maintaining large and complex systems while keeping them
+        reliable, scalable, and maintainable.
+      </>
+    ),
+    skills: [
+      'Java', 'C', 'C++', 'Python', 'Unix/Linux', 'Full Stack Web Development',
+      'HTML, CSS & JavaScript', 'Front-end Development', 'Back-end Development',
+      'APIs', 'Database Technologies', 'Adobe Technologies', 'Web Servers',
+      'Software Architecture', 'System Design',
+    ],
+    extra: (
+      <>
+        We are looking for someone who is not only{' '}
+        <strong className="text-slate-900">technically strong</strong>, but also{' '}
+        <strong className="text-slate-900">curious, self-driven, and comfortable taking ownership</strong> of their work.
+        Strong communication skills are essential — you should be able to explain technical ideas clearly, collaborate
+        effectively, and contribute to discussions around product and engineering decisions.
+      </>
+    ),
+    education: (
+      <>
+        B.Tech., B.E., B.S., M.S., or Ph.D. in{' '}
+        <strong className="text-slate-800">Computer Science, Artificial Intelligence, Information Technology, Software Engineering, or an equivalent technical background</strong> is preferred.
+      </>
+    ),
+    location: (
+      <>
+        <strong className="text-slate-800">Hosur Area, Tamil Nadu</strong>. Candidates must be willing to relocate to the Hosur area.
+      </>
+    ),
+    closing:
+      'If you are a developer who enjoys building things, solving difficult problems, learning new technologies, and working with a highly motivated team, we would be interested in hearing from you.',
+  },
+  {
     title: 'Designer',
     description: (
       <>
