@@ -5,18 +5,17 @@ import rigidfabLogoImg from '../assets/rigidfab.png';
 import jovaMetcraftLogoImg from '../assets/jova_metcraft.png';
 
 const LinkedinIcon = (props) => (
-  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-    <rect x="2" y="9" width="4" height="12"></rect>
-    <circle cx="4" cy="4" r="2"></circle>
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...props}>
+    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18v-8.4H5.67V18h2.67zM7.01 8.48c.93 0 1.5-.61 1.5-1.38-.02-.78-.57-1.37-1.48-1.37s-1.5.59-1.5 1.37c0 .77.57 1.38 1.46 1.38h.02zM18.34 18v-4.83c0-2.58-1.38-3.79-3.22-3.79-1.48 0-2.15.82-2.52 1.39v-1.17h-2.67c.04.75 0 8.4 0 8.4h2.67v-4.69c0-.25.02-.5.09-.68.2-.5.65-1.02 1.42-1.02.99 0 1.4.76 1.4 1.87V18h2.83z" />
   </svg>
 );
 
+// Authentic Instagram glyph: rounded-square camera body, lens ring, flash dot
 const InstagramIcon = (props) => (
-  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  <svg viewBox="0 0 24 24" fill="none" {...props}>
+    <rect x="2.5" y="2.5" width="19" height="19" rx="6" stroke="white" strokeWidth="2" />
+    <circle cx="12" cy="12" r="4.6" stroke="white" strokeWidth="2" />
+    <circle cx="17.4" cy="6.6" r="1.15" fill="white" />
   </svg>
 );
 
@@ -28,6 +27,7 @@ const GithubIcon = (props) => (
 
 const logos = [
   {
+    glowColor: '30, 64, 110', // navy blue, matches the RF shield's ring text and border
     node: (
       <img
         src={rigidfabLogoImg}
@@ -37,6 +37,7 @@ const logos = [
     )
   },
   {
+    glowColor: '212, 160, 60', // warm gold, matches Jova Metcraft's crest tones
     node: (
       <img
         src={jovaMetcraftLogoImg}
@@ -46,6 +47,16 @@ const logos = [
     )
   }
 ];
+
+const BrandText = ({ segments }) => (
+  <>
+    {segments.map((seg, i) => (
+      <span key={i} className={seg.color === 'blue' ? 'text-brand-blue' : 'text-brand-orange'}>
+        {seg.text}
+      </span>
+    ))}
+  </>
+);
 
 const Footer = () => {
   return (
@@ -82,33 +93,98 @@ const Footer = () => {
           {/* Explore */}
           <div>
             <h4 className="text-slate-900 font-bold mb-6 tracking-widest text-xs uppercase">Explore</h4>
-            <ul className="space-y-4 text-slate-700 text-sm font-sans font-medium">
-              <li><a href="#/" className="hover:text-[#EA580C] transition-colors">Home</a></li>
-              <li><a href="#/about" className="hover:text-[#EA580C] transition-colors">About</a></li>
-              <li><a href="#/services" className="hover:text-[#EA580C] transition-colors">Services</a></li>
-              <li><a href="#/contact" className="hover:text-[#EA580C] transition-colors">Contact</a></li>
+            <ul className="space-y-4 text-sm font-sans font-medium">
+              <li><a href="#/" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Ho', color: 'orange' }, { text: 'm', color: 'blue' }, { text: 'e', color: 'orange' }]} /></a></li>
+              <li><a href="#/about" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'A', color: 'orange' }, { text: 'bo', color: 'blue' }, { text: 'ut', color: 'orange' }]} /></a></li>
+              <li><a href="#/services" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Ser', color: 'orange' }, { text: 'vi', color: 'blue' }, { text: 'ces', color: 'orange' }]} /></a></li>
+              <li><a href="#/contact" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Con', color: 'orange' }, { text: 'ta', color: 'blue' }, { text: 'ct', color: 'orange' }]} /></a></li>
+              <li><a href="#/careers" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Ca', color: 'orange' }, { text: 're', color: 'blue' }, { text: 'ers', color: 'orange' }]} /></a></li>
             </ul>
           </div>
 
           {/* Sectors */}
           <div>
             <h4 className="text-slate-900 font-bold mb-6 tracking-widest text-xs uppercase">Sectors</h4>
-            <ul className="space-y-4 text-slate-700 text-sm">
-              <li><a href="#/healthcare" className="hover:text-[#EA580C] transition-colors">Healthcare</a></li>
-              <li><a href="#/manufacturing" className="hover:text-[#EA580C] transition-colors">Manufacturing</a></li>
-              <li><a href="#/agriculture" className="hover:text-[#EA580C] transition-colors">Agriculture</a></li>
-              <li><a href="#/financial-management" className="hover:text-[#EA580C] transition-colors">Financial Management</a></li>
-              <li><a href="#/supply-chain" className="hover:text-[#EA580C] transition-colors">Supply Chain</a></li>
-              <li><a href="#/energy-construction" className="hover:text-[#EA580C] transition-colors">Energy & Consumption</a></li>
+            <ul className="space-y-4 text-sm font-sans">
+              <li><a href="#/healthcare" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Heal', color: 'orange' }, { text: 'th', color: 'blue' }, { text: 'care', color: 'orange' }]} /></a></li>
+              <li><a href="#/manufacturing" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Manu', color: 'orange' }, { text: 'fac', color: 'blue' }, { text: 'turing', color: 'orange' }]} /></a></li>
+              <li><a href="#/agriculture" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Agri', color: 'orange' }, { text: 'cul', color: 'blue' }, { text: 'ture', color: 'orange' }]} /></a></li>
+              <li><a href="#/financial-management" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Finan', color: 'orange' }, { text: 'cial ', color: 'blue' }, { text: 'Management', color: 'orange' }]} /></a></li>
+              <li><a href="#/supply-chain" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Sup', color: 'orange' }, { text: 'ply ', color: 'blue' }, { text: 'Chain', color: 'orange' }]} /></a></li>
+              <li><a href="#/energy-construction" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Ener', color: 'orange' }, { text: 'gy & ', color: 'blue' }, { text: 'Consumption', color: 'orange' }]} /></a></li>
             </ul>
           </div>
 
           {/* Connect */}
           <div>
             <h4 className="text-slate-900 font-bold mb-6 tracking-widest text-xs uppercase">Connect</h4>
-            <div className="flex gap-3 mb-6">
-              <a href="https://www.linkedin.com/company/tensorixai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 hover:border-[#EA580C]/50 hover:text-[#EA580C] text-slate-700 transition-all">
-                <LinkedinIcon className="w-4 h-4" />
+            <div className="flex gap-4 mb-6">
+              <style dangerouslySetInnerHTML={{__html: `
+                @keyframes socialGradientDrift {
+                  0%, 100% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                }
+                .social-gradient-drift {
+                  background-size: 220% 220%;
+                  animation: socialGradientDrift 5s ease-in-out infinite;
+                }
+                @keyframes socialGlowPulse {
+                  0%, 100% { opacity: 0.45; transform: scale(1); }
+                  50% { opacity: 0.75; transform: scale(1.12); }
+                }
+                .social-glow-pulse {
+                  animation: socialGlowPulse 3.2s ease-in-out infinite;
+                }
+                @keyframes socialFloat {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-3px); }
+                }
+                .social-float {
+                  animation: socialFloat 3.6s ease-in-out infinite;
+                }
+              `}} />
+
+              {/* LinkedIn — authentic flat brand blue */}
+              <a
+                href="https://www.linkedin.com/company/tensorixai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="group social-float relative w-11 h-11 transition-transform duration-500 hover:-translate-y-1.5 hover:scale-110"
+              >
+                <div
+                  className="social-glow-pulse absolute -inset-2 rounded-2xl blur-lg pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, #0A66C2 0%, transparent 70%)' }}
+                />
+                <div
+                  className="relative w-11 h-11 flex items-center justify-center rounded-2xl shadow-lg shadow-[#0A66C2]/25 group-hover:shadow-[#0A66C2]/45 transition-shadow duration-500"
+                  style={{ background: '#0A66C2' }}
+                >
+                  <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-2xl bg-gradient-to-b from-white/25 to-transparent pointer-events-none" />
+                  <LinkedinIcon className="relative z-10 w-5 h-5 text-white" />
+                </div>
+              </a>
+
+              {/* Instagram — authentic diagonal brand gradient, slowly animated */}
+              <a
+                href="https://www.instagram.com/tensorix_ai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="group social-float relative w-11 h-11 transition-transform duration-500 hover:-translate-y-1.5 hover:scale-110"
+                style={{ animationDelay: '0.6s' }}
+              >
+                <div
+                  className="social-glow-pulse absolute -inset-2 rounded-2xl blur-lg pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, #D62976 0%, transparent 70%)', animationDelay: '0.4s' }}
+                />
+                <div
+                  className="social-gradient-drift relative w-11 h-11 flex items-center justify-center rounded-2xl shadow-lg shadow-[#D62976]/25 group-hover:shadow-[#D62976]/45 transition-shadow duration-500"
+                  style={{ backgroundImage: 'linear-gradient(45deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5, #FA7E1E, #FEDA75)' }}
+                >
+                  <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-2xl bg-gradient-to-b from-white/25 to-transparent pointer-events-none" />
+                  <InstagramIcon className="relative z-10 w-5 h-5" />
+                </div>
               </a>
 
             </div>

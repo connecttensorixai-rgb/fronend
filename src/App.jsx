@@ -17,6 +17,7 @@ import ManufacturingPage from './pages/ManufacturingPage';
 import AgriculturePage from './pages/AgriculturePage';
 import SupplyChainPage from './pages/SupplyChainPage';
 import EnergyConstructionPage from './pages/EnergyConstructionPage';
+import CareersPage from './pages/CareersPage';
 
 // Register GSAP ScrollTrigger plugin globally
 gsap.registerPlugin(ScrollTrigger);
@@ -34,6 +35,7 @@ function useHashRoute() {
     if (hash.startsWith('#/energy-construction')) return 'energy-construction';
     if (hash.startsWith('#/services')) return 'services';
     if (hash.startsWith('#/contact')) return 'contact';
+    if (hash.startsWith('#/careers')) return 'careers';
     return 'home';
   };
 
@@ -234,6 +236,20 @@ function App() {
         <Navbar />
         <main className="relative z-10 px-0 xl:px-8">
           <ContactPage />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (route === 'careers') {
+    return (
+      <div className="relative min-h-[100dvh] text-slate-900 overflow-x-clip selection:bg-brand-orange/20 selection:text-brand-orange">
+
+
+        <Navbar />
+        <main className="relative z-10 px-0 xl:px-8">
+          <CareersPage />
         </main>
         <Footer />
       </div>

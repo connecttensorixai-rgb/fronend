@@ -140,6 +140,81 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
 };
 
+// Reads each logo <li>'s live position relative to the track container's
+// center (horizontal for a left/right marquee, vertical for up/down) and
+// interpolates it from grayscale/dim -> full color/bright + a warm glow
+// as it crosses the middle. Applies plain inline styles directly to each
+// <li>, so it works whether the logo is an <img> (grayscale utility
+// classes) or an arbitrary custom `node` — filter/opacity cascade to
+// children either way. When a logo is far from center, inline styles are
+// cleared entirely so the element's own Tailwind classes (e.g. the
+// grayscale/hover:grayscale-0 pair) behave normally.
+const useCenterFocusGlow = (containerRef, trackRef, enabled, glowRadius, isVertical, glowColor) => {
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+    const container = containerRef.current;
+    const track = trackRef.current;
+    if (!container || !track) return undefined;
+
+    const tick = () => {
+      const containerRect = container.getBoundingClientRect();
+      const centerPoint = isVertical
+        ? containerRect.top + containerRect.height / 2
+        : containerRect.left + containerRect.width / 2;
+
+      const items = track.querySelectorAll('li');
+      items.forEach(li => {
+        const r = li.getBoundingClientRect();
+        const itemCenter = isVertical ? r.top + r.height / 2 : r.left + r.width / 2;
+        const distance = Math.abs(itemCenter - centerPoint);
+        const proximity = Math.max(0, 1 - distance / glowRadius);
+
+        // The color/grayscale filter has to be set on the actual <img>
+        // (or whatever element carries its own `filter` class), not the
+        // <li> wrapper — CSS `filter` on a parent composites ON TOP of a
+        // child's own `filter`, it doesn't replace it. An inline style on
+        // the img itself, though, outranks its Tailwind `grayscale` class.
+        const colorTarget = li.querySelector('img') || li.firstElementChild || li;
+
+        if (proximity <= 0.01) {
+          if (colorTarget.style.filter) colorTarget.style.filter = '';
+          if (li.style.opacity) li.style.opacity = '';
+          if (li.style.transform) li.style.transform = '';
+          if (li.style.boxShadow) li.style.boxShadow = '';
+        } else {
+          const gray = (1 - proximity).toFixed(3);
+          const brightness = (1 + 0.5 * proximity).toFixed(3);
+          const saturate = (1 + 1.2 * proximity).toFixed(3);
+          const contrast = (1 + 0.3 * proximity).toFixed(3);
+          const glowSize = (24 * proximity).toFixed(1);
+          const glowAlpha = (0.95 * proximity).toFixed(2);
+          const itemGlowColor = li.dataset.glow || glowColor;
+          colorTarget.style.filter = `grayscale(${gray}) brightness(${brightness}) saturate(${saturate}) contrast(${contrast}) drop-shadow(0 0 ${glowSize}px rgba(${itemGlowColor}, ${glowAlpha}))`;
+          li.style.opacity = `${(0.65 + 0.35 * proximity).toFixed(2)}`;
+          li.style.transform = `scale(${(1 + 0.14 * proximity).toFixed(3)})`;
+          // A diffused ambient glow that radiates OUTWARD past the
+          // element's own tight bounding box — a background gradient
+          // can't do this well here because the li is sized almost
+          // exactly to the logo, so a gradient never gets room to fade
+          // before it hits the edge and just looks like a solid fill.
+          const blur = (26 * proximity).toFixed(1);
+          const spread = (6 * proximity).toFixed(1);
+          li.style.boxShadow = `0 0 ${blur}px ${spread}px rgba(${itemGlowColor}, ${(0.55 * proximity).toFixed(2)})`;
+        }
+      });
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [enabled, containerRef, trackRef, glowRadius, isVertical, glowColor]);
+};
+
 export const LogoLoop = memo(
   ({
     logos,
@@ -156,7 +231,13 @@ export const LogoLoop = memo(
     renderItem,
     ariaLabel = 'Partner logos',
     className,
-    style
+    style,
+    // New: center-focus glow. On by default — logos gain full color and a
+    // warm glow as they pass through the middle of the strip, and settle
+    // back to their default grayscale/dim look on the way out.
+    centerGlow = true,
+    glowRadius = 130,
+    glowColor = '235, 129, 60'
   }) => {
     const containerRef = useRef(null);
     const trackRef = useRef(null);
@@ -219,6 +300,8 @@ export const LogoLoop = memo(
 
     useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
 
+    useCenterFocusGlow(containerRef, trackRef, centerGlow, glowRadius, isVertical, glowColor);
+
     const cssVariables = useMemo(
       () => ({
         '--logoloop-gap': `${gap}px`,
@@ -262,6 +345,7 @@ export const LogoLoop = memo(
               )}
               key={key}
               role="listitem"
+              data-glow={item.glowColor || glowColor}
             >
               {renderItem(item, key)}
             </li>
@@ -335,12 +419,13 @@ export const LogoLoop = memo(
             )}
             key={key}
             role="listitem"
+            data-glow={item.glowColor || glowColor}
           >
             {inner}
           </li>
         );
       },
-      [isVertical, scaleOnHover, renderItem]
+      [isVertical, scaleOnHover, renderItem, glowColor]
     );
 
     const logoLists = useMemo(
@@ -419,4 +504,3 @@ export const LogoLoop = memo(
 LogoLoop.displayName = 'LogoLoop';
 
 export default LogoLoop;
-
