@@ -99,7 +99,9 @@ export default function Navbar() {
         >
           <div
             className="text-3xl md:text-4xl font-bold font-sans tracking-tight leading-none"
-            style={{ filter: 'drop-shadow(14px 22px 6px rgba(15,23,42,0.3))' }}
+            style={{
+              WebkitBoxReflect: 'below 1px linear-gradient(to bottom, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 40%, rgba(255,255,255,0) 75%)',
+            }}
           >
             <span className="text-brand-orange transition-colors duration-300">ten</span>
             <span className="text-brand-blue transition-colors duration-300">s</span>
