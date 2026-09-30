@@ -61,8 +61,12 @@ export default function Hero() {
         </div>
 
         {/* Times New Roman / Editorial styled description */}
-        <p ref={descRef} className="text-lg md:text-xl text-slate-700 max-w-2xl font-serif leading-relaxed mb-10 opacity-0">
+        <p ref={descRef} className="text-lg md:text-xl text-slate-700 max-w-2xl font-serif leading-relaxed mb-6 opacity-0">
           TensorixAI empowers enterprises to deploy AI-driven systems that automate complex workflows, optimize operations in real time, and unlock actionable intelligence across the organization. From manufacturing and logistics to finance, healthcare, retail, and smart infrastructure, our AI agents deliver measurable business outcomes with speed, precision, and scale. 
+        </p>
+
+        <p className="text-lg md:text-xl text-slate-700 max-w-2xl font-serif leading-relaxed mb-10">
+          TensorixAI is a cutting-edge AI technologies and software company specializing in intelligent workflow automation, branding, and technical innovation. Founded and led by Gerald & Deepak, the company is driven by a vision to empower businesses with scalable, efficient, and visually clear solutions that blend advanced technology with professional presentation.
         </p>
 
 
