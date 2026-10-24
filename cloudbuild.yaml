@@ -3,7 +3,7 @@ steps:
     args:
       - build
       - -t
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$BUILD_ID
       - --build-arg=VITE_API_URL=$_VITE_API_URL
       - --build-arg=VITE_APPS_SCRIPT_URL=$_VITE_APPS_SCRIPT_URL
       - --build-arg=VITE_ADMIN_ROUTE=$_VITE_ADMIN_ROUTE
@@ -13,20 +13,20 @@ steps:
       - --build-arg=VITE_FIREBASE_APP_ID=$_VITE_FIREBASE_APP_ID
       - .
   - name: gcr.io/cloud-builders/docker
-    args: [push, $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$SHORT_SHA]
+    args: [push, $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$BUILD_ID]
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
       - run
       - deploy
       - frontend
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$BUILD_ID
       - --region=$_REGION
       - --platform=managed
       - --port=8080
       - --allow-unauthenticated
 images:
-  - $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/frontend:$BUILD_ID
 substitutions:
   _REGION: asia-south1
   _REPO: my-repo

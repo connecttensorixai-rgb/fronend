@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+*.log
+src.zip
+check_console.js
+verify_healthcare_scrolly.js
+fetch.js
+README.md
