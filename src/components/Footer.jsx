@@ -99,6 +99,8 @@ const Footer = () => {
               <li><a href="#/services" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Ser', color: 'orange' }, { text: 'vi', color: 'blue' }, { text: 'ces', color: 'orange' }]} /></a></li>
               <li><a href="#/contact" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Con', color: 'orange' }, { text: 'ta', color: 'blue' }, { text: 'ct', color: 'orange' }]} /></a></li>
               <li><a href="#/careers" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Ca', color: 'orange' }, { text: 're', color: 'blue' }, { text: 'ers', color: 'orange' }]} /></a></li>
+              <li><a href="#/tehter" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'TE', color: 'orange' }, { text: 'H', color: 'blue' }, { text: 'TER', color: 'orange' }]} /></a></li>
+              <li><a href="#/case-studies" className="hover:opacity-80 transition-opacity"><BrandText segments={[{ text: 'Case ', color: 'orange' }, { text: 'Stu', color: 'blue' }, { text: 'dies', color: 'orange' }]} /></a></li>
             </ul>
           </div>
 

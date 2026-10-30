@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import ApplyForm from '../components/ApplyForm';
+import { fetchRoles } from '../utils/careersApi';
 
-const openRoles = [
+// Built-in list, used only if the roles cannot be loaded from the server
+const fallbackRoles = [
   {
+    id: 'AI-MD-01',
     title: 'AI Engineer',
     description: (
       <>
@@ -36,6 +40,7 @@ const openRoles = [
       'If you are passionate about AI, Machine Learning, Deep Learning, and building next-generation AI products, we would love to hear from you.',
   },
   {
+    id: 'FS-MD-01',
     title: 'Full Stack Developer',
     description: (
       <>
@@ -76,6 +81,8 @@ const openRoles = [
       'If you are a developer who enjoys building things, solving difficult problems, learning new technologies, and working with a highly motivated team, we would be interested in hearing from you.',
   },
   {
+    id: 'DS-MD-01',
+    portfolio: true,
     title: 'Designer',
     description: (
       <>
@@ -105,16 +112,52 @@ const openRoles = [
 
 const MAIL_TO = 'connect@tensorixai.com';
 
-function mailtoHref(role) {
-  const subject = `Application: ${role.title} — TensorixAI`;
-  const body = `Hi TensorixAI team,\n\nI'd like to apply for the ${role.title} role. Please find my resume${role.title === 'Designer' ? ' and portfolio' : ''} attached.\n\nThanks,\n`;
-  return `mailto:${MAIL_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+const slugify = (v) => String(v || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// Reads ?role=... and ?src=... from the hash, e.g. #/careers?role=ai-engineer&src=linkedin
+function readHashParams() {
+  const q = window.location.hash.split('?')[1] || '';
+  const params = new URLSearchParams(q);
+  return { role: params.get('role'), src: params.get('src') || 'LinkedIn' };
 }
 
 export default function CareersPage() {
+  const [{ role: requested, src }, setParams] = useState(readHashParams);
+  const [roles, setRoles] = useState(null); // null while loading
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchRoles()
+      .then((r) => { if (!cancelled) setRoles(r); })
+      .catch(() => { if (!cancelled) setRoles(fallbackRoles); });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    const onHash = () => setParams(readHashParams());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [requested]);
+
+  if (roles === null) {
+    return (
+      <div className="pt-40 pb-24 text-center text-slate-500 font-serif min-h-[100dvh]">Loading openings…</div>
+    );
+  }
+
+  // Role check: the role in the LinkedIn link must be listed on this page.
+  const activeRole = requested
+    ? roles.find((r) => slugify(r.id) === slugify(requested) || slugify(r.title) === slugify(requested))
+    : null;
+
+  if (activeRole) {
+    return <ApplyForm role={{ id: activeRole.id, title: activeRole.title, portfolio: !!activeRole.portfolio }} source={src} />;
+  }
 
   return (
     <div className="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto relative min-h-[100dvh]">
@@ -140,10 +183,16 @@ export default function CareersPage() {
       </div>
 
 
+      {requested && !activeRole && (
+        <div className="max-w-4xl mx-auto mb-8 rounded-2xl border border-amber-300/60 bg-amber-50 p-5 text-sm text-amber-900 font-serif">
+          Sorry, the position you clicked on LinkedIn is no longer open. Please have a look at our current openings below.
+        </div>
+      )}
+
       <div className="max-w-4xl mx-auto space-y-6">
-        {openRoles.map((role) => (
+        {roles.map((role) => (
           <div
-            key={role.title}
+            key={role.id}
             className="group relative flex flex-col rounded-2xl border border-slate-200/50 bg-white/40 backdrop-blur-md p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50 hover:border-brand-orange/40"
           >
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
@@ -151,6 +200,7 @@ export default function CareersPage() {
                 <h3 className="text-xl font-bold text-slate-900 font-sans mb-2 group-hover:text-brand-orange transition-colors duration-300">
                   {role.title}
                 </h3>
+                <p className="text-xs font-mono text-slate-400 mb-3">Job ID: {role.id}</p>
                 <p className="text-sm text-slate-600 font-serif leading-relaxed mb-4 max-w-xl">
                   {role.description}
                 </p>
@@ -190,10 +240,10 @@ export default function CareersPage() {
               </div>
 
               <a
-                href={mailtoHref(role)}
+                href={`#/careers?role=${role.id}`}
                 className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-brand-orange hover:bg-brand-orange/90 shadow-sm transition-all whitespace-nowrap"
               >
-                Send us a resume
+                Apply now
                 <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>

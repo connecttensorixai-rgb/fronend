@@ -3,9 +3,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Pillars from './components/Pillars';
-import Industries from './components/Industries';
 import Footer from './components/Footer';
 import ParticlesBg from './components/ParticlesBg';
 import AboutPage from './pages/AboutPage';
@@ -18,6 +15,7 @@ import AgriculturePage from './pages/AgriculturePage';
 import SupplyChainPage from './pages/SupplyChainPage';
 import EnergyConstructionPage from './pages/EnergyConstructionPage';
 import CareersPage from './pages/CareersPage';
+import TensorixSite from './components/TensorixSite';
 
 // Register GSAP ScrollTrigger plugin globally
 gsap.registerPlugin(ScrollTrigger);
@@ -36,6 +34,8 @@ function useHashRoute() {
     if (hash.startsWith('#/services')) return 'services';
     if (hash.startsWith('#/contact')) return 'contact';
     if (hash.startsWith('#/careers')) return 'careers';
+    if (hash.startsWith('#/tehter')) return 'tehter';
+    if (hash.startsWith('#/case-studies')) return 'case-studies';
     return 'home';
   };
 
@@ -256,23 +256,12 @@ function App() {
     );
   }
 
-  // Default: Home page
+  // Home, TEHTER and Case Studies: new pages ported from tensaiweb.html (one shared instance, switches by hash)
   return (
-    <div className="relative min-h-[100dvh] bg-[#F8FAFC] text-slate-900 overflow-x-clip selection:bg-brand-orange/20 selection:text-brand-orange blueprint-dots">
-      {/* Interactive particles background network */}
-      <ParticlesBg />
-
-      {/* Decorative noise/gradient backdrop container */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(33,61,131,0.06),rgba(255,255,255,0))] pointer-events-none -z-20" />
-
-
-
-      {/* Dynamic page structure */}
+    <div className="relative min-h-[100dvh] text-slate-900 overflow-x-clip selection:bg-brand-orange/20 selection:text-brand-orange">
       <Navbar />
-      <main className="relative z-10 px-0 xl:px-8">
-        <Hero />
-        <Pillars />
-        <Industries />
+      <main className="relative z-10">
+        <TensorixSite />
       </main>
       <Footer />
     </div>

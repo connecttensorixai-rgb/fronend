@@ -25,6 +25,8 @@ export default function Navbar() {
       else if (hash.startsWith('#/agriculture')) setCurrentRoute('agriculture');
       else if (hash.startsWith('#/supply-chain')) setCurrentRoute('supply-chain');
       else if (hash.startsWith('#/contact')) setCurrentRoute('contact');
+      else if (hash.startsWith('#/tehter')) setCurrentRoute('tehter');
+      else if (hash.startsWith('#/case-studies')) setCurrentRoute('case-studies');
       else setCurrentRoute('home');
     };
     checkRoute();
@@ -64,6 +66,20 @@ export default function Navbar() {
       href: '#/services',
       onClick: () => {
         window.location.hash = '#/services';
+      },
+    },
+    {
+      label: 'TEHTER',
+      href: '#/tehter',
+      onClick: () => {
+        window.location.hash = '#/tehter';
+      },
+    },
+    {
+      label: 'Case Studies',
+      href: '#/case-studies',
+      onClick: () => {
+        window.location.hash = '#/case-studies';
       },
     },
     {
@@ -111,12 +127,14 @@ export default function Navbar() {
         </a>
 
         {/* Navigation Links */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
           {navItems.map((item, idx) => {
             const isActive =
               (item.label === 'Home' && currentRoute === 'home') ||
               (item.label === 'About' && currentRoute === 'about') ||
               (item.label === 'Services' && (currentRoute === 'services' || currentRoute === 'healthcare' || currentRoute === 'financial-management' || currentRoute === 'manufacturing' || currentRoute === 'agriculture' || currentRoute === 'supply-chain')) ||
+              (item.label === 'TEHTER' && currentRoute === 'tehter') ||
+              (item.label === 'Case Studies' && currentRoute === 'case-studies') ||
               (item.label === 'Contact' && currentRoute === 'contact');
 
             return (
@@ -192,6 +210,8 @@ export default function Navbar() {
               (item.label === 'Home' && currentRoute === 'home') ||
               (item.label === 'About' && currentRoute === 'about') ||
               (item.label === 'Services' && (currentRoute === 'services' || currentRoute === 'healthcare' || currentRoute === 'financial-management' || currentRoute === 'manufacturing' || currentRoute === 'agriculture' || currentRoute === 'supply-chain')) ||
+              (item.label === 'TEHTER' && currentRoute === 'tehter') ||
+              (item.label === 'Case Studies' && currentRoute === 'case-studies') ||
               (item.label === 'Contact' && currentRoute === 'contact');
 
             return (
